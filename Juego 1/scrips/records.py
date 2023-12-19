@@ -15,12 +15,12 @@ def cargar_record():
             # lee los records del  CSV 
             records = []
             for row in lectura:
-                nombre, puntaje = row
+                nombre, puntaje = row # row es una variable que se encaraga de optener los datos de la fila de cvs 
                 record = Record(nombre, puntaje)
                 records.append(record)
             
             # Ordenar los registros por puntaje de mayor a menor
-            records.sort(key=lambda x: float(x.puntaje), reverse=True)
+            records.sort(key=lambda x: float(x.puntaje), reverse=True) #sort ordena los objetos de la lista 
             
             # Devolver solo los primeros 5 registros
             return records[:5]
@@ -36,7 +36,7 @@ def guardar_record(record):
         records = cargar_record()
 
         # Ordenar los registros por puntaje de mayor a menor
-        records.sort(key=lambda r: int(r.puntaje), reverse=True)
+        records.sort(key=lambda r: int(r.puntaje), reverse=True)#sort ordena los objetos de la lista 
 
         # Verificar si el nuevo récord es mejor que los existentes
         if int(record.puntaje) > int(records[-1].puntaje):
