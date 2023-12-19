@@ -17,22 +17,22 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):  
         super(Player,self).__init__()  
 
-        #self.surf = pygame.image.load("imagen_redimensionada").convert()
         self.surf = pygame.transform.rotate(imagen_redimensionada, -90)
         #coloca color al objeto
         self.surf.set_colorkey((255, 225, 225),RLEACCEL)
         # Da atributos al objeto
         self.rect = self.surf.get_rect()
         self.tiempo_vida_total = 0
-    
-        hitbox_width = 50  # Ancho del hitbox reducido
-        hitbox_height = 50  # Alto del hitbox reducido
+
+        #redimencio el hitbox
+        hitbox_ancho = 50  # Ancho del hitbox reducido
+        hitbox_alto = 50  # Alto del hitbox reducido
         #self.rect.inflate_ip((hitbox_width - self.rect.width), (hitbox_height - self.rect.height))
         # Define el hitbox y ajusta su posición para que esté centrado
-        self.hitbox = pygame.Rect(0, 0, hitbox_width, hitbox_height)
+        self.hitbox = pygame.Rect(0, 0, hitbox_ancho, hitbox_alto)
         self.hitbox.center = self.rect.center
         
-    #actualiza la posicion dependiendo el objeto
+    #actualiza la posicion del jugador dependiendo de la tecla presionada
     def update(self,pressed_keys):
 
         velocidad = 7
@@ -44,14 +44,14 @@ class Player(pygame.sprite.Sprite):
             self.rect.move_ip(velocidad , 0)
         if pressed_keys[pygame.K_LEFT]:    
             self.rect.move_ip(-velocidad , 0)  
-        self.tiempo_vida_total += 1 / 45.0  
+        self.tiempo_vida_total += 1 / 45.0  # se encarga de sumar tiempo al contador 
 
         self.hitbox.center = self.rect.center
     
-
+    #muetsra el puntaje del jugador
     def mostrar_tiempo_vida(self, pantalla):
-        font = pygame.font.Font(None, 36)
-        tiempo_texto = font.render(f"Tiempo de Vida: {int(self.tiempo_vida_total)} segundos", True, (0, 0, 0))
+        fuente = pygame.font.Font(None, 36)
+        tiempo_texto = fuente.render(f"Tiempo de Vida: {int(self.tiempo_vida_total)} segundos", True, (0, 0, 0))
         pantalla.blit(tiempo_texto, (10, 10))    
         
 
