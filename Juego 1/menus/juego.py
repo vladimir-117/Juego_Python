@@ -11,9 +11,10 @@ def iniciar_juego(nombre_jugador):
         KEYDOWN,
         QUIT,
         )
-
+    pygame.mixer.init()
+    
     pygame.init()
-
+    
     # crea las dimenciones de la pantalla 
     pantalla_largo = 800
     pantalla_alto = 600
@@ -26,9 +27,14 @@ def iniciar_juego(nombre_jugador):
     AñadirEnemigo = pygame.USEREVENT + 1
     pygame.time.set_timer(AñadirEnemigo, 250)
 
+    #crea nubes en el esenario
+    AñadirNube = pygame.USEREVENT + 0
+    pygame.time.set_timer(AñadirNube, 1000)
+
     #jugador y enemigo importado desde scrips 
     from personajes.jugador import Player
     from personajes.enemigos import Enemigo
+    from personajes.nube import Nube
     from scrips.perdido import game_over
     from scrips.records import guardar_record,cargar_record,Record
     
@@ -37,21 +43,25 @@ def iniciar_juego(nombre_jugador):
 
     #Creador  del evento  enemigos inicial
     enemigos = pygame.sprite.Group()
+    nubes = pygame.sprite.Group()
     all_sprites = pygame.sprite.Group()
     all_sprites.add(player1)
 
     #inicia el juego (establece el parametro a jugando para iniciar los otros parametros)
     jugando = True
 
+    #llamamos un metodo de pygame que se encarga de reproduccir musica (archivos .mp3)
+    pygame.mixer.music.load("assets/nuclear fusion.mp3")
+    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.play(loops=-1)
     #crea la ventana de juego
     while jugando:
-
+        
         for event in pygame.event.get():
             if event.type == KEYDOWN:
                 # para cerrar el juego con esc 
                 if event.key == K_ESCAPE:
                     jugando = False
-
             elif event.type == QUIT:
                     jugando = False
                     # llama al evento de los enemigos
@@ -60,18 +70,22 @@ def iniciar_juego(nombre_jugador):
                 new_enemy = Enemigo()
                 enemigos.add(new_enemy)
                 all_sprites.add(new_enemy)
+            
+            elif event.type == AñadirNube:
+                new_nube = Nube()
+                nubes.add(new_nube)
+                all_sprites.add(new_nube)
 
 
         #recibe las teclas de entrada
         teclas_presionadas = pygame.key.get_pressed()
 
-
         #actualza los sprites en base a las teclas presionadas 
         player1.update(teclas_presionadas)
         
-
         # actualiza la posicion de los enemigos 
         enemigos.update()
+        nubes.update()
 
         #dibujar los enemigos 
         for entity in all_sprites:
@@ -84,9 +98,8 @@ def iniciar_juego(nombre_jugador):
             # Crear un objeto Record
             nuevo_record = Record(nombre_jugador,int(round(float(player1.tiempo_vida_total))))
             guardar_record(nuevo_record)
-            
-
             game_over()
+            
                 
         # Rellena la ventana con un color antes de dibujar
         ventana.fill((135, 206, 250))
