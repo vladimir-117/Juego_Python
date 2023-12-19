@@ -1,9 +1,10 @@
 import pygame
 import sys
 
-
+#definimos un funcion de fin de juego 
 def game_over():
     pygame.init()
+    pygame.mixer.music.stop()
     from menus.juego import iniciar_juego
     from scrips.nombres import recolectar_nombre
     from menus.menu import menu 
