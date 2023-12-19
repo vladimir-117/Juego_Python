@@ -2,19 +2,24 @@ import pygame
 
 def recolectar_nombre():
     pygame.init()
+    #creamos al ventana para escribir el nombre del usuario
     ventana = pygame.display.set_mode((400, 200))
+    #sirve para dar nombre a la ventana
     pygame.display.set_caption("Ingresa tu nombre")
 
+    
+    #Iniciamos la variable nombre con un vacio para ser escrita despues
     nombre = ""
-    font = pygame.font.Font(None, 36)
-    input_rect = pygame.Rect(150, 50, 140, 32)
-    color_inactive = pygame.Color('lightskyblue3')
-    color_active = pygame.Color('dodgerblue2')
-    color = color_inactive
+    fuente = pygame.font.Font(None, 36)
+    input_rect = pygame.Rect(100, 70, 140, 32) #ubicacion del rectangulo
+    nombre_texto = fuente.render("Ingrese nombre del Piloto", True , (255,255,255)) #texto sobre el rectangulo
+    color_inactive = pygame.Color('lightskyblue3') # colores de las letras sin escribir
+    color_active = pygame.Color('dodgerblue2') #colotes de la letras escritas
+    color = color_inactive 
     active = False
 
-    clock = pygame.time.Clock()
-
+    fps = pygame.time.Clock()
+    #cremao el bucel principla del funcionamiento del modulo de recolección de nombres
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -34,15 +39,20 @@ def recolectar_nombre():
                     elif event.key == pygame.K_BACKSPACE:
                         nombre = nombre[:-1]
                     else:
-                        nombre += event.unicode
+                         # Añadir el carácter solo si no se ha alcanzado la longitud máxima
+                        if len(nombre) < 9:
+                            nombre += event.unicode
+                        
 
+        #crea el fondo del juego
         ventana.fill((30, 30, 30))
-        txt_surface = font.render(nombre, True, color)
-        width = max(200, txt_surface.get_width() + 10)
-        input_rect.w = width
-        ventana.blit(txt_surface, (input_rect.x + 5, input_rect.y + 5))
-        pygame.draw.rect(ventana, color, input_rect, 2)
+        ventana.blit(nombre_texto, (ventana.get_width() // 2 - nombre_texto.get_width() // 2, 10))# se encarga de escribir el texto toma valores de la ventana y el texto a escribir
+        txt_surface = fuente.render(nombre, True, color)
+        maximo_escritura = max(200, txt_surface.get_width() + 10) # define la loguitud del texto lo  maximo
+        input_rect.w = maximo_escritura #Ajusta el ancho de la caja de entrada según la longitud máxima del texto.
+        ventana.blit(txt_surface, (input_rect.x + 5, input_rect.y + 5)) #Dibuja el texto ingresado en la caja de entrada.
+        pygame.draw.rect(ventana, color, input_rect, 2) # Dibuja el borde de la caja de entrada.
 
         pygame.display.flip()
-        clock.tick(30)
+        fps.tick(30)
 
