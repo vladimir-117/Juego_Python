@@ -17,7 +17,7 @@ def recolectar_nombre():
     color_active = pygame.Color('dodgerblue2') #colotes de la letras escritas
     color = color_inactive 
     active = False
-
+    #se encarga de establecer los fotogramas del juego (fps)
     fps = pygame.time.Clock()
     #cremao el bucel principla del funcionamiento del modulo de recolección de nombres
     while True:
